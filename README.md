@@ -1,95 +1,39 @@
 sealed
 
-Small CLI for storing encrypted environment variables directly in .env files.
-Only values are encrypted, so files remain diffable and Git-friendly. One key per project, no
-interactive prompts, safe defaults, and Unix-friendly behavior.
+Encrypted environment variables, without breaking your .env workflow.
 
-Why use it
-- Keep secrets out of plaintext .env files while preserving normal dotenv workflows.
-- Encrypt only values, leaving keys and non-secret lines untouched.
-- Works well in CI and scripts (stdin, files, no prompts).
+sealed is a small Rust workspace that gives you:
+- a CLI to encrypt values directly in `.env` files (Git-friendly and diffable)
+- a tiny library to read and decrypt encrypted values from process environment
 
-How it works
-- Encrypts with ChaCha20-Poly1305.
-- Uses the variable name as AAD.
-- Stores values as: ENCv1:<base64(nonce)>:<base64(ciphertext)>
+What this is
+- Encrypt only values, keep keys and file structure intact
+- One project key, no prompts, script/CI friendly
+- Safe defaults and clear error messages
 
-Install
-Build from source:
-```sh
-cargo build --release
-./target/release/sealed --help
-```
+When it helps
+- You want to commit `.env` to git but keep secrets encrypted
+- You need a minimal tool that works in shells, pipelines, and CI
+- You want a library to read encrypted env vars like `std::env::var`
 
-Commands
-```sh
-sealed set <VAR_NAME>
-sealed get <VAR_NAME>
-sealed keygen
-```
-
-Examples
-Generate a key:
+Quick look
 ```sh
 sealed keygen
-sealed keygen -o .sealed.key
-```
-
-Set a value from stdin:
-```sh
-echo -n "supersecret" | sealed set DATABASE_PASSWORD -s -k "<base64-key>"
-```
-
-Set a value from a file:
-```sh
-sealed set DATABASE_PASSWORD -f ./secret.txt -k "<base64-key>"
-```
-
-Set a value using key from env:
-```sh
-export SEALED_KEY="<base64-key>"
-echo -n "supersecret" | sealed set DATABASE_PASSWORD -s
-```
-
-Read a value:
-```sh
-sealed get DATABASE_PASSWORD
-```
-
-Reveal plaintext (requires key):
-```sh
+sealed set DATABASE_PASSWORD -s -k "<base64-key>" <<<"supersecret"
 sealed get DATABASE_PASSWORD -r -k "<base64-key>"
 ```
 
-Env file format example
+What’s inside
+- CLI (`cargo-sealed`): `cli/README.md`
+  - Commands, examples, exit codes, and env file format
+- Library (`sealed-env`): `lib/README.md`
+  - API docs and Rust usage examples
+
+Format
+Encrypted values are stored as:
 ```
-DATABASE_PASSWORD=ENCv1:2s8fK0cPpFJ6x2xZ1C9kLw==:mKJrY0GmZCq7cN5h4F2...
-```
-
-Library (sealed-env)
-The library mirrors the ergonomics of `std::env::var`, but understands Sealed values.\n\n
-Behavior
-- Reads from the process environment.
-- Expects encrypted values to start with `ENCv1:`.\n- Uses `SEALED_KEY` from the environment for decryption.
-- Returns UTF-8 plaintext on success.
-
-API
-- `sealed_env::var(name)`\n  - Strict: requires the variable to be present and encrypted.\n- `sealed_env::var_or_plain(name)`\n  - Lenient: returns plaintext as-is if the value is not encrypted.\n- `sealed_env::var_optional(name)`\n  - Optional: returns `Ok(None)` if the variable is not set; otherwise decrypts if needed.
-
-Example
-```sh
-# In Rust:
-use sealed_env::{var, var_or_plain, var_optional};
+ENCv1:<base64(nonce)>:<base64(ciphertext)>
 ```
 
-Notes
-- If a value is not encrypted, sealed get prints it as-is.
-- Stdin can be used only once; --stdin and --key-stdin cannot be combined.
-- For --value, pass --allow-argv explicitly.
-
-Exit codes
-- 0: success
-- 1: variable not found
-- 2: decryption or key error
-- 3: invalid arguments
-- 4: env file error
+License
+MIT

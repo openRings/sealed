@@ -1,7 +1,18 @@
 [package]
-name = "sealed"
+name = "cargo-sealed"
 version = "0.1.0"
 edition = "2024"
+description = "CLI for storing encrypted environment variables in .env files"
+license = "MIT"
+repository = "https://github.com/openRings/sealed"
+homepage = "https://github.com/openRings/sealed"
+readme = "README.md"
+keywords = ["env", "dotenv", "secrets", "encryption", "cli"]
+categories = ["command-line-utilities", "cryptography"]
+
+[[bin]]
+name = "sealed"
+path = "src/main.rs"
 
 [dependencies]
 base64.workspace = true

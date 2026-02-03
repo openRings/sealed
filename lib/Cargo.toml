@@ -2,6 +2,13 @@
 name = "sealed-env"
 version = "0.1.0"
 edition = "2024"
+description = "Read and decrypt sealed environment variables"
+license = "MIT"
+repository = "https://github.com/openRings/sealed"
+homepage = "https://github.com/openRings/sealed"
+readme = "README.md"
+keywords = ["env", "dotenv", "secrets", "encryption"]
+categories = ["cryptography", "config"]
 
 [dependencies]
 base64.workspace = true
