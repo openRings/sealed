@@ -1,8 +1,8 @@
 use base64::Engine as _;
 use base64::engine::general_purpose;
 use clap::Parser;
-use rand::rngs::OsRng;
 use rand::TryRngCore;
+use rand::rngs::OsRng;
 use secrecy::ExposeSecret;
 use std::fs;
 use zeroize::Zeroize;

@@ -2,8 +2,8 @@ use base64::Engine as _;
 use base64::engine::general_purpose;
 use chacha20poly1305::aead::{Aead, KeyInit, Payload};
 use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
-use rand::rngs::OsRng;
 use rand::TryRngCore;
+use rand::rngs::OsRng;
 use secrecy::{ExposeSecret, SecretSlice, SecretString};
 
 use crate::error::SealedError;

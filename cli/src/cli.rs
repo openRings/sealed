@@ -35,7 +35,10 @@ pub enum Commands {
     )
 )]
 pub struct SetArgs {
-    #[arg(value_name = "VAR_NAME", help = "Environment variable name (used as AAD)")]
+    #[arg(
+        value_name = "VAR_NAME",
+        help = "Environment variable name (used as AAD)"
+    )]
     pub var_name: String,
 
     #[arg(long, short = 's', help = "Read plaintext value from stdin")]
@@ -57,19 +60,39 @@ pub struct SetArgs {
     )]
     pub value_file: Option<PathBuf>,
 
-    #[arg(long = "allow-argv", short = 'a', help = "Allow --value to read plaintext from argv")]
+    #[arg(
+        long = "allow-argv",
+        short = 'a',
+        help = "Allow --value to read plaintext from argv"
+    )]
     pub allow_argv: bool,
 
-    #[arg(long, short = 'k', value_name = "BASE64", help = "Read key from base64-encoded argument")]
+    #[arg(
+        long,
+        short = 'k',
+        value_name = "BASE64",
+        help = "Read key from base64-encoded argument"
+    )]
     pub key: Option<String>,
 
-    #[arg(long = "key-file", short = 'K', value_name = "PATH", help = "Read key from a file (base64)")]
+    #[arg(
+        long = "key-file",
+        short = 'K',
+        value_name = "PATH",
+        help = "Read key from a file (base64)"
+    )]
     pub key_file: Option<PathBuf>,
 
     #[arg(long = "key-stdin", short = 'S', help = "Read key from stdin (base64)")]
     pub key_stdin: bool,
 
-    #[arg(long = "env-file", short = 'e', value_name = "PATH", default_value = ".env", help = "Path to env file")]
+    #[arg(
+        long = "env-file",
+        short = 'e',
+        value_name = "PATH",
+        default_value = ".env",
+        help = "Path to env file"
+    )]
     pub env_file: PathBuf,
 }
 
@@ -78,19 +101,38 @@ pub struct SetArgs {
     long_about = "Read a variable from the env file. If the value is encrypted, a key is required to decrypt it (from --key/--key-file/--key-stdin or SEALED_KEY).\nWithout --reveal, plaintext is not printed."
 )]
 pub struct GetArgs {
-    #[arg(value_name = "VAR_NAME", help = "Environment variable name (used as AAD)")]
+    #[arg(
+        value_name = "VAR_NAME",
+        help = "Environment variable name (used as AAD)"
+    )]
     pub var_name: String,
 
-    #[arg(long = "env-file", short = 'e', value_name = "PATH", default_value = ".env", help = "Path to env file")]
+    #[arg(
+        long = "env-file",
+        short = 'e',
+        value_name = "PATH",
+        default_value = ".env",
+        help = "Path to env file"
+    )]
     pub env_file: PathBuf,
 
     #[arg(long, short = 'r', help = "Print decrypted plaintext to stdout")]
     pub reveal: bool,
 
-    #[arg(long, short = 'k', value_name = "BASE64", help = "Read key from base64-encoded argument")]
+    #[arg(
+        long,
+        short = 'k',
+        value_name = "BASE64",
+        help = "Read key from base64-encoded argument"
+    )]
     pub key: Option<String>,
 
-    #[arg(long = "key-file", short = 'K', value_name = "PATH", help = "Read key from a file (base64)")]
+    #[arg(
+        long = "key-file",
+        short = 'K',
+        value_name = "PATH",
+        help = "Read key from a file (base64)"
+    )]
     pub key_file: Option<PathBuf>,
 
     #[arg(long = "key-stdin", short = 'S', help = "Read key from stdin (base64)")]
@@ -99,6 +141,11 @@ pub struct GetArgs {
 
 #[derive(Args)]
 pub struct KeygenArgs {
-    #[arg(long = "out-file", short = 'o', value_name = "PATH", help = "Write base64 key to a file instead of stdout")]
+    #[arg(
+        long = "out-file",
+        short = 'o',
+        value_name = "PATH",
+        help = "Write base64 key to a file instead of stdout"
+    )]
     pub out_file: Option<PathBuf>,
 }

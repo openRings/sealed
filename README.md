@@ -66,6 +66,22 @@ Env file format example
 DATABASE_PASSWORD=ENCv1:2s8fK0cPpFJ6x2xZ1C9kLw==:mKJrY0GmZCq7cN5h4F2...
 ```
 
+Library (sealed-env)
+The library mirrors the ergonomics of `std::env::var`, but understands Sealed values.\n\n
+Behavior
+- Reads from the process environment.
+- Expects encrypted values to start with `ENCv1:`.\n- Uses `SEALED_KEY` from the environment for decryption.
+- Returns UTF-8 plaintext on success.
+
+API
+- `sealed_env::var(name)`\n  - Strict: requires the variable to be present and encrypted.\n- `sealed_env::var_or_plain(name)`\n  - Lenient: returns plaintext as-is if the value is not encrypted.\n- `sealed_env::var_optional(name)`\n  - Optional: returns `Ok(None)` if the variable is not set; otherwise decrypts if needed.
+
+Example
+```sh
+# In Rust:
+use sealed_env::{var, var_or_plain, var_optional};
+```
+
 Notes
 - If a value is not encrypted, sealed get prints it as-is.
 - Stdin can be used only once; --stdin and --key-stdin cannot be combined.
